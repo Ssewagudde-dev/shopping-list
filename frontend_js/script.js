@@ -120,7 +120,9 @@ function addItemToDOM(item) {
   li.className = "collection-item";
 
   const itemText = document.createTextNode(
-    `${item.name} (Quantity: ${item.quantity || 0}) - Notes: ${item.notes || ""}`,
+    `${item.name} (Quantity: ${item.quantity || 0}) - Notes: ${
+      item.notes || ""
+    }`
   );
   li.appendChild(itemText);
 
@@ -179,7 +181,7 @@ async function editItem(e) {
         name: currentItem.querySelector("#edit-item-name").value.trim(),
         quantity: parseInt(
           currentItem.querySelector("#edit-item-quantity").value.trim(),
-          10,
+          10
         ),
         notes: currentItem.querySelector("#edit-item-notes").value.trim(),
       };
@@ -202,7 +204,9 @@ async function editItem(e) {
         // Clear the currentItem and append the updated item information
         currentItem.innerHTML = "";
         const itemText = document.createTextNode(
-          `${item.name} (Quantity: ${item.quantity || 0}) - Notes: ${item.notes || ""}`,
+          `${item.name} (Quantity: ${item.quantity || 0}) - Notes: ${
+            item.notes || ""
+          }`
         );
         currentItem.appendChild(itemText);
 
@@ -233,11 +237,12 @@ async function clearList() {
 }
 
 // Filter list
+
 function filterList(e) {
   const text = e.target.value.toLowerCase();
 
   document.querySelectorAll(".collection-item").forEach(function (item) {
-    const itemText = item.firstChild.textContent;
+    const itemText = item.firstChild.textContent.toLowerCase();
     if (itemText.includes(text)) {
       item.style.display = "block";
     } else {

@@ -9,39 +9,50 @@
     />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css"
-      integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm"
-      crossorigin="anonymous"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
     <style>
-      /* Add your inline styles here */
-      .container1 {
-        justify-content: center;
-        align-items: center;
-        display: flex;
-        width: 70%;
-        height: 100vh;
-        margin: 0 auto;
-      }
-      #list-box {
-        width: 100%;
-      }
       #list-name {
         font-weight: 500;
+      }
+
+      .fa-remove {
+        color: red;
+      }
+      .fa-edit {
+        color: blue;
       }
     </style>
     <title>Shopping List</title>
   </head>
   <body>
-    <div class="container1">
+    <div class="container">
       <div class="row" id="list-box">
         <div class="col s12">
           <div id="main" class="card">
             <div class="card-content">
-              <div style="display:flex; justify-content: space-between;">
-              <span class="card-title" id="list-name">Shopping List</span>
-              <a href="login.html" style="width:60px; text-align: center;  cursor: pointer; height: 35px; margin: 5px 0px; background-color: rgb(7, 163, 174); border: none; border-radius: 5px; color: #f3f3f3;  font: 500; display: flex; justify-content: center; align-items: center;">Login</a>
-            </div>
+              <div style="display: flex; justify-content: space-between">
+                <span class="card-title" id="list-name">Shopping List</span>
+                <a
+                  href="login.html"
+                  style="
+                    width: 60px;
+                    text-align: center;
+                    cursor: pointer;
+                    height: 35px;
+                    margin: 5px 0px;
+                    background-color: rgb(7, 163, 174);
+                    border: none;
+                    border-radius: 5px;
+                    color: #f3f3f3;
+                    font: 500;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                  "
+                  >Logout</a
+                >
+              </div>
               <div class="row">
                 <form id="list-form">
                   <div class="input-field col s12">
