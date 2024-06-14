@@ -65,10 +65,29 @@ const deleteItem = async (req, res) => {
   }
 };
 
+//delete all items
+const deleteAllItems = async (req, res) => {
+  try {
+    const deleted = await Item.destroy({
+      where: {},
+      truncate: false
+    });
+
+    if (deleted) {
+      res.status(200).send({ message: 'All items deleted' });
+    } else {
+      res.status(404).send({ message: 'No items found' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+};
+
 module.exports = {
   addItem,
   getItems,
   getItem,
   updateItem,
-  deleteItem
+  deleteItem,
+  deleteAllItems
 };

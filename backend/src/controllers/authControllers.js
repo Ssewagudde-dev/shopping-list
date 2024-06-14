@@ -26,10 +26,11 @@ const { User } = require('../models');
     
     //add hasshed password hiding
     const hashedPassword = await bcrypt.hash(password, 10);
-
+   
     //create a new user in the database
-        const user = await User.create({ username, email, password: hashedPassword});
-        res.status(201).json(user);
+    const user = await User.create({ name, email, password: hashedPassword});
+    // return res.status(400).json({ error: 'created user' });
+    res.status(201).json(user);
 
 
     } catch (error) {
