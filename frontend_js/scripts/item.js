@@ -28,19 +28,38 @@ function loadEventListeners() {
 // Fetch items from backend
 async function getItems() {
   try {
-    const res = await fetch("http://localhost:5000/api/items");
-    const items = await res.json();
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No token found");
+    }
+    console.log(token);
+    const res = await fetch("http://localhost:5000/api/items", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      }
+      
+    });
 
+    if (!res.ok) {
+      const errorBody = await res.json(); 
+      console.error(`Error fetching items: ${res.status} - ${errorBody.error}`);
+      // Handle error display or further actions based on errorBody.error
+      return;
+    }
+
+    const items = await res.json();
     items.forEach((item) => {
       console.log(item);
       addItemToDOM(item);
     });
+
   } catch (error) {
     console.error("Error fetching items:", error);
+    // Handle general error display or further actions
   }
 }
 
-// Add Item to the database
 async function addItem(e) {
   e.preventDefault();
 
@@ -59,12 +78,15 @@ async function addItem(e) {
     notes: notesInput.value || "",
   };
 
+  const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
   if (isEditMode) {
     try {
       const res = await fetch(`http://localhost:5000/api/items/${ItemId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in Authorization header
         },
         body: JSON.stringify(newItem),
       });
@@ -85,6 +107,7 @@ async function addItem(e) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Include token in Authorization header
         },
         body: JSON.stringify(newItem),
       });
@@ -141,15 +164,26 @@ function addItemToDOM(item) {
   list.appendChild(li);
 }
 
-// Remove item
 async function removeItem(e) {
   if (e.target.parentElement.classList.contains("delete-item")) {
     if (confirm("Are You Sure")) {
       const itemId = e.target.parentElement.getAttribute("data-id");
+
+      const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
       try {
-        await fetch(`http://localhost:5000/api/items/${itemId}`, {
+        const res = await fetch(`http://localhost:5000/api/items/${itemId}`, {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in Authorization header
+          },
         });
+
+        if (!res.ok) {
+          throw new Error("Failed to delete item");
+        }
+
+        // Remove the item from the DOM upon successful deletion
         e.target.parentElement.parentElement.remove();
       } catch (error) {
         console.error("Error deleting item:", error);
@@ -157,6 +191,7 @@ async function removeItem(e) {
     }
   }
 }
+
 
 // Edit Item
 async function editItem(e) {
@@ -186,11 +221,14 @@ async function editItem(e) {
         notes: currentItem.querySelector("#edit-item-notes").value.trim(),
       };
 
+      const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
       try {
         const res = await fetch(`http://localhost:5000/api/items/${itemId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Include token in Authorization header
           },
           body: JSON.stringify(updatedItem),
         });
@@ -230,11 +268,27 @@ async function editItem(e) {
 
 // Clear list
 async function clearList() {
-  await fetch("http://localhost:5000/api/items", {
-    method: "DELETE",
-  });
-  list.innerHTML = "";
+  const token = localStorage.getItem('token'); // Retrieve token from localStorage
+
+  try {
+    const res = await fetch("http://localhost:5000/api/items", {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`, // Include token in Authorization header
+      },
+    });
+
+    if (!res.ok) {
+      throw new Error("Failed to clear list");
+    }
+
+    // Clear the list in the DOM upon successful deletion
+    list.innerHTML = "";
+  } catch (error) {
+    console.error("Error clearing list:", error);
+  }
 }
+
 
 // Filter list
 

@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerUser, loginUser } = require("../controllers/authcontrollers");
+const { registerUser, loginUser } = require("../controllers/authControllers"); // Corrected the file name
 const router = express.Router();
 
 //register route
